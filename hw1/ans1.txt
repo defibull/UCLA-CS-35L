@@ -1,0 +1,142 @@
+1. You can find this using the man -k option that searches
+all the manuals for a particular keyword.
+I reached that conclusion by looking up the
+options for the manual command itself using man man.
+   Keystrokes: man -k whateverKeyword
+This presented me with a list of options relating
+to the manual. 
+2. The cp is located in /usr/local/cs/bin
+and wc is located in /usr/local/cs/bin as well.
+This can be done by running the which command to
+check its location.
+    Keystrokes: which cp
+    		which wc
+3. The executable programs that are just
+one character long can be found using the find command.
+If we look up the manual for find, we shall know that
+we can use it to find things in a particular location,
+therefore we redirect it to the place where the commands
+lie. 
+    Keystrokes:find /usr/bin -name ?
+    Commands found: 
+    /usr/bin/w
+    /usr/bin/X
+    What the commands do:
+    This is found using man commandname
+     w - Show who is logged on and what they are doing.
+     X - a portable, network-transparent window system.
+     The server distributes user input to and accepts
+     output requests from various client programs
+     through a variety of different interprocess
+     communication channels.
+	 
+4. gcc is executed when you execute the command
+named by the symbolic link /usr/bin/cc.
+This can be found by using the readlink command
+which resolves symbolic linksand prints them out.
+    Keystrokes: readlink /usr/bin/cc
+5. According to the manual with chmod you have the following options
+   set user or group ID on execution at runtime (s)
+   other users in the file’s group(g),
+   - causes the existing file mode bits of each file  to be removed
+   Therefore the option g-s restricts the users in the
+   group from changing id of other users in the file's
+   group during runtime as I am removing the set id
+   bits from the group's permissions.
+   	Keystrokes: chmod g-s
+6. -mtime numberOfdays. This was found in the man page.
+	Keystrokes: find -mtime 
+7.Directories  modified 
+ .
+./Desktop
+./Desktop/desktop.ini
+./Documents
+./Documents/desktop.ini
+./Downloads
+./Downloads/desktop.ini
+./.Xauthority
+./lab1
+./35L/ans1.txt~ 
+
+I entered n as 3 in the command find -mtime 3
+
+8. There are 350 symbolic links in the same directory as find .
+This can be done by first finding which directory find is in
+through the which find command then  using the
+find /pathTodirectory -typel command to find the symbolic links,
+copying and pasting them in a text file and then counting
+the number of lines in that file using the wc -l command. 
+	Keystrokes: which find 
+		    find /usr/bin -type l
+		    --- save it in a text file called count.txt
+		    wc -l
+
+9. The file create on  Mar  3  2010 called libgamin-1.so.0.1.10 is
+the oldest regular file in this directory.
+This can be foundby ls -l -t /usr/bin
+10. According to the manual page the locale command gets its data
+from the environment variables such as LC_NAME etc. 
+Therefore the data is from the current environment of the machine. 
+11. Buffer-menu-sort              M-x ... RET
+  Command: Sort the buffer menu by COLUMN.
+Buffer-menu-sort-by-column    M-x ... RET
+  Command: Sort the buffer menu by the column clicked on.
+ibuffer-invert-sorting        M-x ... RET
+  Command: Toggle whether or not sorting is in reverse order.
+ibuffer-toggle-sorting-mode   M-x ... RET
+  Command: Toggle the current sorting mode.
+rmail-sort-by-author          M-x ... RET
+  Command: Sort messages of current Rmail file by author.
+rmail-sort-by-correspondent   M-x ... RET
+  Command: Sort messages of current Rmail file by other correspondent.
+rmail-sort-by-date            M-x ... RET
+  Command: Sort messages of current Rmail file by date.
+rmail-sort-by-labels          M-x ... RET
+  Command: Sort messages of current Rmail file by labels.
+rmail-sort-by-lines           M-x ... RET
+  Command: Sort messages of current Rmail file by number of lines.
+rmail-sort-by-recipient       M-x ... RET
+  Command: Sort messages of current Rmail file by recipient.
+
+this can be found in the appropos option of help : C-h ? a 
+
+12. C-a - go to the beginning of the line
+    C-b - move to the prev character
+    C-c - changes to shell mode : has commands associated with it 
+    C-d - Deletes current character but cursor stays in the same place  
+    C-e - move cursor end of the line
+    C-f - move cursor to the next character
+    C-g - quit whatever you're command is (when in the middle of command) 
+    C-h - help
+    C-i - adds tab character
+    C-k - delete line after cursor 
+    C-l - Moves the page according to the cursor
+    C-m - Insert a new line and move cursor to it 
+    C-n - Move cursor down one line
+    C-o - Insert a new line but keep cursor in the same position
+    C-p - Move cursor up one line
+    C-q - Inserts say a character that the keyboard doesnt support,
+    you add a command and it inserts it as text 
+    C-r - Search backwards from where the cursor is 
+    C-s - Search the current file 
+    C-t - Switch current character with the character behind it
+    (it becomes ti, this also works with spaces)
+    C-u - prefix argument used to repeat the command that follows
+    say n times 
+    C-v - scroll downwards 
+    C-w - kill the text from the cursor location to the mark 
+    C-x - prefix command to perform extra tasks such as
+    reading a file from disk, saving it to disk etc 
+    C-y - get the last kill back to the screen
+    C-z - temporarily suspend emacs
+
+13. C-g  Cancels a command that is currently running
+(say when emacs is stuck) or removes a partially typed command
+14. get the last kill back to the screen or rather
+paste the last thing killed to the buffer
+15. The ls -l command finds 96816 files in the /usr/bin directory
+while the dired command in emacs displays 395728 used files in the directory.
+Emacs also displays how many files are available which is 3072392.
+Emacs displays a lot more files, it also considers subdirectories
+like '.' as a separate entry
+
