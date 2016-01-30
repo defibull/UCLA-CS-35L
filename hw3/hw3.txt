@@ -1,0 +1,26 @@
+1. The case_long_iso_time_style: was a go to label in the for loop,
+this was - if (locale_format == long_time_format[i])
+since we are removing the go to command in the for loop, this would have most
+likely become redundant. Therefore it wasn't necessary to remove but
+helpful from a readability standpoint.
+2. If other commands in my companies code rely on the date being of the old
+format, for eg: filling a form etc.
+Non english speakers can probably understand dates in the numerical
+format a lot more intuitively compared to dates/ they may not know
+month acronyms.
+3. Running the program on dev/null with the command
+python randline.py -n 3 /dev/null
+It gives an error IndexError: list index out of range
+Exception was thrown when the program tried to read the file
+since the file was empty
+4. When I try to run the implementation with python3 instead of python
+it gives a syntax error
+File "randline.py", line 65
+    except IOError as (errno, strerror):
+                          ^
+                          SyntaxError: invalid syntax
+This could be because python3 has different syntax than python2
+It seems to be that python3 does not support automatic tuple unpacking
+(errno,strerror).
+
+~                                   
