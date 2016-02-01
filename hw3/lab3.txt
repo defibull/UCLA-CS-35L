@@ -1,0 +1,64 @@
+1. wget ftp://ftp.gnu.org/gnu/coreutils/coreutils-7.6.tar.gz to grab the file
+   and store it in the home directory.
+2. unzip tar file: tar -xzvf coreutils-7.6.tar.gz
+   mkdir coreutilsInstall : make a temporary directory
+   cd coreutils-7.6 : to see the directions as to how to configure
+   The directions say : `cd' to the directory containing the package's source
+   code and type `./configure' to configure the package for your system.
+   Since, some systems require unusual options, to check for my system;
+        I ran ./configure --help
+        To save it in the temporary directory - which was in the home
+        directory:
+        cd coreutils-7.6
+        ./configure --prefix=/u/ma/ugrad/khanna/coreutilsInstall
+        make install : install the software
+        cd ~/coreutilsInstall/bin
+3.  I could then run the ls command to see whether or not the date came out in
+  the wrong format
+  Therefore: ./ls -l : gave me the date as 2015-10-17 07:10
+  While the ls -l : gave me the date as Oct 17 07:10
+4. We need to apply brady's patch, therefore :
+   cd coreutils-7.6 ; cd src ; ls ; emacs ls.c
+   alter the file according to the email by going to the appropriate locations
+   and editing the file : I did the editing manually
+5.   -------------------- The following are the commands that followed after I
+ran make at the root
+   with explanations ---------------------
+
+make  all-recursive -- Run make recursively through the folders.
+make[1]: Entering directory '/w/home.04/ma/ugrad/khanna/coreutils-7.6'
+Making all in lib
+make[2]: Entering directory '/w/home.04/ma/ugrad/khanna/coreutils-7.6/lib'
+make  all-recursive
+make[3]: Entering directory '/w/home.04/ma/ugrad/khanna/coreutils-7.6/lib'
+make[4]: Entering directory '/w/home.04/ma/ugrad/khanna/coreutils-7.6/lib'
+make[4]: Leaving directory '/w/home.04/ma/ugrad/khanna/coreutils-7.6/lib'
+make[3]: Leaving directory '/w/home.04/ma/ugrad/khanna/coreutils-7.6/lib'
+make[2]: Leaving directory '/w/home.04/ma/ugrad/khanna/coreutils-7.6/lib'
+Making all in src
+make[2]: Entering directory '/w/home.04/ma/ugrad/khanna/coreutils-7.6/src'
+make  all-am
+make[3]: Entering directory '/w/home.04/ma/ugrad/khanna/coreutils-7.6/src'
+  CC     ls.o                   -
+  CCLD   dir                    ---> These are the commands that are
+  CCLD   vdir                   -    rebuilding files I just changed
+  CCLD   ls                     -
+        make[3]: Leaving directory '/w/home.04/ma/ugrad/khanna
+        /coreutils-7.6/src'
+make[2]: Leaving directory '/w/home.04/ma/ugrad/khanna
+        /coreutils-7.6/src'
+        Making all in doc
+        -- unnecessary commands here so I deleted them from lab notebook
+        Making all in man
+        -- unnecessary
+              Making all in tests
+              -- unnecessary commands like entering and leaving the directory
+6. I ran the ./ls -l command in src - since the modified version was in src and
+it gave me an output
+-rw-r--r-- 1 khanna maugrad   3787 Sep  1  2009 basename.c
+for a file that is atleast an year old
+-rw-r--r-- 1 khanna maugrad  63744 Oct 17 07:10 cat.o
+for a file that has been recently modified
+while ./ls -l in the bin still gave me the wrong output (as it was the previous
+version).
+
