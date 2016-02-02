@@ -1,0 +1,44 @@
+I made a directory on the harddrive and made a clone of
+the git repo
+$ mkdir gitroot
+$ cd gitroot
+$ git clone git://git.savannah.gnu.org/diffutils.git
+I then made a git log and git tag file by using
+git log > git-log.txt
+git tag > git-tags.txt in the root directory
+I then opened the log and used emacs C-s to search the
+quote string given in the lab and genereated a patch for that commit
+using the following commands (after putting the patch in a file
+called quote-patch)
+git format-patch -1 62ca21c8c1a5aa3488589dcb191a4ef04ae9ed4f
+ --stdout > quote-patch.txt
+ git checkout v3.0
+ patch -p1 < quote-patch.txt
+
+// put in the errors recieved
+
+I then ran a git status command to get a record of what happened
+This resulted in the following output
+HEAD detached at v3.0
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+(use "git checkout -- <file>..." to discard changes in working direc
+tory)
+// a list of modified files
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+I then changed the files that were not .c using C-x v= (to get the
+difference between the original and current version) and then C-x v u
+to revert the changes.
+For the .c files I removed stuff manually from the c file comments and
+didn't touch the stuff in the code. then I cleaned up the c files
+based on diff.c.rej and diff3.c.rej and also removed untracked files
+by first checking which ones its gonna remove i.e git clean -n and then git
+clean -f to actually remove those untracked files.
+I then followed the steps in README-hacking and it did work
+also ./diff --help in src and ./diff . - works as expected
+then I performed the sanity test, there were some differences from the .c
+files and the back ticks and the quotes were different
+Differences are not innocuous as they are in the string literals
+~                                                                  
