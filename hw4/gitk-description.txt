@@ -1,0 +1,10 @@
+One subwindow shows the commits, the other
+shows the users who did it, the third
+subwindow shows the dates
+the forth gives more details about the
+commits and the  change log file
+and the last one is the comments on the
+patch or tree
+The search can search the changelog
+
+
