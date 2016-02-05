@@ -1,0 +1,19 @@
+git checkout v3.0 -b quote
+M                src/cmp.c
+M                src/diff.c
+M                src/diff3.c
+M                src/dir.c
+M                src/sdiff.c
+M                src/util.c
+Switched to a new branch 'quote' using git checkout v3.0 -b quote. then I
+cd back into the parent dir, Then I applied the patch
+patch -p1 < quote-3.0-patch.txt
+I then wrote the ChangeLog file in the same format as ChangeLog-2008
+I then added my changes using git add . and then commit them using
+git commit -F ChangeLog
+I then made a formatted patch using git format-patch -1 --stdout >
+formatted-patch.txt
+
+I checked the patch for suchit panjiyar using the instructions given
+and it gave the expected result when I ran make check after the git am
+command
