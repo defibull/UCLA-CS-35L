@@ -1,0 +1,101 @@
+I copied the link address and first made a temporary directory.
+I then used wget http://web.cs.ucla.edu
+/classes/fall15/cs35L/assign/coreutils-with-bug.tar.gz
+to download the file in the temp
+directory. I then unzipped it using
+tar -xvf coreutils-with-bug.tar.gz
+then I ran ./configure on it to configure it, and then make to
+make it however that resulted in multiple build errors such as:
+------------------
+In file included from utimecmp.c:41:0:
+utimens.h:2:5: error: conflicting types for 'futimens'
+ int futimens (int, char const *, struct timespec const [2]);
+      ^
+      In file included from utimecmp.h:25:0,
+                       from utimecmp.c:25:
+                       /usr/include/sys/stat.h:374:12: note:
+                 previous declaration of 'futimens' was here
+ extern int
+ futimens
+ (int __fd, __const struct timespec __times[2]) __THROW;
+Makefile:659: recipe for target 'utimecmp.o' failed                                 ^
+----------------
+Therefore in order to fix the program,
+I said wget http://web.cs.ucla.edu
+/classes/fall15/cs35L/assign/coreutils.diff
+Then I decided to to rebuild it after applying a patch
+patch -p0 < coreutils.diff
+./configure
+make
+This time it worked.
+What problems did you have when building it
+as-is, and why did the renaming patch fix them?
+So as seen above, when building it as-is, there were two
+conflicting types of the function futimens in utimens.c
+the patch changes the name of one of the futimens
+functions so that the conflict goes away.
+It also changes the name for a function called  tee
+which could have been causing another error.
+
+In order to reproduce the bug I ran the steps as mentioned
+[khanna@lnxsrv01 ~/tmp/coreutils-with-bug]$ tmp=$(mktemp -d)
+[khanna@lnxsrv01 ~/tmp/coreutils-with-bug]$ cd $tmp
+.
+.
+.
+[khanna@lnxsrv01 ~]$ rm -fr $tmp
+
+I opened the folder in src, since ls -lt was the command giving
+issues I decided to check ls.c file. I had looked up the GNU manual
+for the -t option in ls http://www.gnu.org
+/software/coreutils/manual/html_node
+/Sorting-the-output.html#Sorting-the-output
+this page mentioned the mtime inode. So I ran gdb on it with
+(gdb) run -lt /tmp/tmp.Dsf0WzNOb2/wwi-armistice /tmp/tmp.Dsf0WzNOb2/now /tmp/tmp.Dsf0WzNOb2/now1
+and set the break point on compare_mtime. I stepped into that function
+using si and noticed that it was delegating its job to timespec_cmp.
+So I decided that looking at the values of the variables it was
+comparing using print *a and print *b. I noticed that when it compared
+now1 and now, the time variables were regular positive numbers
+however, some  overflow occured when it was comparing wwi-armistice
+as the st_mtim 's tv_sec variable showed a large negative value.
+So I thought of fixing the problem by looking at timespec_cmp inside
+the timespec.h file in the lib folder.
+I noticed that the difference between the two tv_sec values
+was stored in an int. I changed that to a long long int just
+so that I could test it with the biggest variable type possible,
+and I changed the return type of the function to be long long int
+as well. This however didn't work, so I decided to just compare
+the two values using if statements, and depending on whats greater/
+lesser, I'd return 1,-1 or 0.
+I then named the new timespec.h as timespec.h while the old one
+as changedtimespec.h and then recompiled using
+make clean
+./configure
+make
+Now I made a patch by renaming the files again using diff -u timespec.h changetimespec.h > lab5.diff. I tested this patch
+by deleting all the changed files from the lib and then applying
+the patch with the -p0 option and it did change the timespec.h
+file to what I wanted.
+
+--
+When running the above test case in the home directory,
+use the already-installed touch and ls utilities
+instead of the old version of coreutils. How well does SEASnet do?
+
+Upon reproducing the error in the home directory, the output given
+is
+-rw-r--r-- 1 khanna maugrad 0 2054-12-17 09:28:16.000000000 -0800
+wwi-armistice
+-rw-r--r-- 1 khanna maugrad 0 2015-11-02 01:56:10.737453000 -0800 now1
+-rw-r--r-- 1 khanna maugrad 0 2015-11-02 01:56:08.157028000 -0800 now
+
+Therefore ls when created in the past resulted in a future time
+value. This could be because the timestamp of the  files
+saved in my seasnet account are saved in a 32 bit integer
+but the SEASNET machine uses a 64 bit integer for the time difference
+so the upper bits which are supposed to denote a negative
+sign when the files are being compared with 32 bit ints , result
+in a large positive number when viewed converted to decimal
+via a 64 bit integer
+
